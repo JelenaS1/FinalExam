@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +42,7 @@ public class VinoController {
 	@Autowired
 	private VinoToVinoDto toVinoDto;
 	
-//	@PreAuthorize("hasAnyRole('ROLE_KORISNIK', 'ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_KORISNIK', 'ROLE_ADMIN')")
 	@GetMapping
 	public ResponseEntity<List<VinoDTO>> getAll( 
 			@RequestParam(required = false) String ime,
@@ -64,7 +65,7 @@ public class VinoController {
 		return new ResponseEntity<>(toVinoDto.convert(page.getContent()), headers, HttpStatus.OK);
 	}
 	
-//	@PreAuthorize("hasAnyRole('ROLE_KORISNIK', 'ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_KORISNIK', 'ROLE_ADMIN')")
 	@GetMapping("/{id}")
 	public ResponseEntity<VinoDTO> getOne(@PathVariable Long id){
 		Vino vino = vinoService.findOne(id);
@@ -76,7 +77,7 @@ public class VinoController {
 		}
 	}
 	
-//	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<VinoDTO> create(@Valid @RequestBody VinoDTO vinoDTO){
 		Vino vino = toVino.convert(vinoDTO);
@@ -87,7 +88,7 @@ public class VinoController {
 		return new ResponseEntity<>(toVinoDto.convert(sacuvanoVino),  HttpStatus.CREATED);
 	}
 	
-//	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@PutMapping(value = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<VinoDTO> update(@PathVariable Long id, @Valid @RequestBody VinoDTO vinoDTO){
 		
@@ -102,7 +103,7 @@ public class VinoController {
 		return new ResponseEntity<>(toVinoDto.convert(sacuvanoVino), HttpStatus.OK);
 	}
 	
-//	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id){
 		Vino obrisanoVino = vinoService.delete(id);
@@ -113,7 +114,7 @@ public class VinoController {
 		}
 	}
 	
-//	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	@GetMapping("/naruci/{id}")
 	public ResponseEntity<VinoDTO> nabavi(@PathVariable Long id, @RequestParam Integer kolicinaS){
 		Vino vino = vinoService.findOne(id);
@@ -128,7 +129,7 @@ public class VinoController {
 		return new ResponseEntity<>(toVinoDto.convert(vino), HttpStatus.OK);
 	}
 	
-//	@PreAuthorize("hasAnyRole('ROLE_KORISNIK')")
+	@PreAuthorize("hasAnyRole('ROLE_KORISNIK')")
 	@GetMapping("/kupi/{id}")
 	public ResponseEntity<VinoDTO> kupi(@PathVariable Long id, @RequestParam Integer kolicinaS){
 		Vino vino = vinoService.findOne(id);
